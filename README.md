@@ -14,6 +14,14 @@ The sample code for the OpenGL ES 3.0 Programming Guide currently builds on the 
 
 Instructions for building for each platform are provided in Chapter 16, "OpenGL ES Platforms".
 
+
+#### Android Build
+##### NDK
+```shell
+export PATH=$PATH:/Users/frank/android/ndk/android-ndk-r18b
+cd Chapter_2/Hello_Triangle/Android/jni && ndk-build
+```
+
 ## Authors ##
 Dan Ginsburg<br/>
 Budirijanto Purnomo<br/>
