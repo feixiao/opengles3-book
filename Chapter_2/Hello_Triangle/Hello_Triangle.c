@@ -54,6 +54,7 @@ GLuint LoadShader ( GLenum type, const char *shaderSrc )
    GLint compiled;
 
    // Create the shader object
+   // 创建指定类型的新着色器对象
    shader = glCreateShader ( type );
 
    if ( shader == 0 )
@@ -96,10 +97,13 @@ GLuint LoadShader ( GLenum type, const char *shaderSrc )
 
 ///
 // Initialize the shader and program object
+// 核心工作是加载一个顶点作色器和一个片段作色器
 //
 int Init ( ESContext *esContext )
 {
    UserData *userData = esContext->userData;
+
+   // 顶点作色器
    char vShaderStr[] =
       "#version 300 es                          \n"
       "layout(location = 0) in vec4 vPosition;  \n"
@@ -108,6 +112,7 @@ int Init ( ESContext *esContext )
       "   gl_Position = vPosition;              \n"
       "}                                        \n";
 
+   // 片段作色器
    char fShaderStr[] =
       "#version 300 es                              \n"
       "precision mediump float;                     \n"
@@ -127,6 +132,7 @@ int Init ( ESContext *esContext )
    fragmentShader = LoadShader ( GL_FRAGMENT_SHADER, fShaderStr );
 
    // Create the program object
+   // 创建程序对象并将顶点着色器和片段着色器连接到对象
    programObject = glCreateProgram ( );
 
    if ( programObject == 0 )
@@ -176,6 +182,8 @@ int Init ( ESContext *esContext )
 void Draw ( ESContext *esContext )
 {
    UserData *userData = esContext->userData;
+
+   // 三个坐标指定的三角形
    GLfloat vVertices[] = {  0.0f,  0.5f, 0.0f,
                             -0.5f, -0.5f, 0.0f,
                             0.5f, -0.5f, 0.0f
@@ -204,10 +212,13 @@ void Shutdown ( ESContext *esContext )
    glDeleteProgram ( userData->programObject );
 }
 
+
+// 框架代码的入口函数, 负责分配userData、创建窗口和初始化绘图回调函数。
 int esMain ( ESContext *esContext )
 {
    esContext->userData = malloc ( sizeof ( UserData ) );
 
+   // 创建指定宽度和高度的窗口
    esCreateWindow ( esContext, "Hello Triangle", 320, 240, ES_WINDOW_RGB );
 
    if ( !Init ( esContext ) )
@@ -216,6 +227,8 @@ int esMain ( ESContext *esContext )
    }
 
    esRegisterShutdownFunc ( esContext, Shutdown );
+
+   // 注册回调函数
    esRegisterDrawFunc ( esContext, Draw );
 
    return GL_TRUE;
